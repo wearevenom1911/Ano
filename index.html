@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07090d">
+  <meta name="description" content="ANO Store — اكتشف اللابتوب المناسب لك.">
+  <title>ANO Store — Find Your Next Laptop</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Changa:wght@500;600;700;800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#" aria-label="ANO Store">
+        <span class="brand-mark">A</span>
+        <span>ANO<span class="brand-accent">STORE</span></span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="التنقل">
+        <a href="#products">الأجهزة</a>
+        <a href="#why-us">لماذا ANO؟</a>
+        <a id="contact-link" class="nav-cta" href="#" target="_blank" rel="noopener">
+          تواصل معنا <span>↗</span>
+        </a>
+      </nav>
+
+      <a id="mobile-contact" class="mobile-contact" href="#" target="_blank" rel="noopener" aria-label="تواصل معنا">
+        واتساب
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="pulse-dot"></span>
+            <span>TECH • PERFORMANCE • STYLE</span>
+          </div>
+
+          <h1>
+            اللابتوب الصح
+            <span>يبدأ من هنا.</span>
+          </h1>
+
+          <p class="hero-sub">
+            اختار من مجموعة أجهزة متاحة، قارن المواصفات والأسعار، وخد قرارك بثقة.
+            البيانات بتتحدث مباشرة من كتالوج ANO Store.
+          </p>
+
+          <div class="hero-actions">
+            <a class="primary-btn" href="#products">
+              اكتشف الأجهزة
+              <span>↓</span>
+            </a>
+            <a class="secondary-btn" id="hero-contact" href="#" target="_blank" rel="noopener">
+              اسألنا عن جهاز
+            </a>
+          </div>
+
+          <div class="hero-trust">
+            <div class="trust-item">
+              <strong id="hero-stock">—</strong>
+              <span>جهاز متاح</span>
+            </div>
+            <div class="trust-divider"></div>
+            <div class="trust-item">
+              <strong>100%</strong>
+              <span>كتالوج محدث</span>
+            </div>
+            <div class="trust-divider"></div>
+            <div class="trust-item">
+              <strong>24/7</strong>
+              <span>تواصل</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-glow"></div>
+          <div class="floating-tag tag-top">
+            <span class="tag-icon">⚡</span>
+            <span><b>FAST</b><small>Performance</small></span>
+          </div>
+
+          <div class="laptop-stage">
+            <div class="screen-frame">
+              <div class="screen-content">
+                <div class="screen-brand">ANO</div>
+                <div class="screen-line"></div>
+                <div class="screen-title">GO<br><span>FURTHER.</span></div>
+                <div class="screen-grid"></div>
+              </div>
+            </div>
+            <div class="keyboard-base">
+              <div class="keyboard-glow"></div>
+              <div class="trackpad"></div>
+            </div>
+          </div>
+
+          <div class="floating-tag tag-bottom">
+            <span class="tag-icon">✓</span>
+            <span><b>YOUR CHOICE</b><small>Your next machine</small></span>
+          </div>
+
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="brand-strip">
+      <div class="wrap brand-strip-inner">
+        <span>AVAILABLE BRANDS</span>
+        <div class="brand-names">
+          <b>DELL</b>
+          <b>HP</b>
+          <b>LENOVO</b>
+          <b>ASUS</b>
+          <b>APPLE</b>
+          <b>ACER</b>
+        </div>
+      </div>
+    </section>
+
+    <section id="products" class="products-section">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">THE COLLECTION</span>
+            <h2>اختار جهازك.</h2>
+            <p>ابحث، فلتر، وقارن — وكل التفاصيل قدامك.</p>
+          </div>
+
+          <div class="live-status">
+            <span class="live-dot"></span>
+            <span>Live Catalog</span>
+          </div>
+        </div>
+
+        <div class="controls-card">
+          <div class="search-box">
+            <span class="search-icon">⌕</span>
+            <input id="search" type="text" placeholder="ابحث باسم الجهاز أو الماركة..." autocomplete="off">
+            <kbd>⌘ K</kbd>
+          </div>
+
+          <div class="filter-group">
+            <label for="brand-filter">الماركة</label>
+            <select id="brand-filter">
+              <option value="">كل الماركات</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="sort-by">ترتيب</label>
+            <select id="sort-by">
+              <option value="default">الأحدث في الكتالوج</option>
+              <option value="price-asc">السعر: الأقل أولاً</option>
+              <option value="price-desc">السعر: الأعلى أولاً</option>
+              <option value="name-asc">الاسم: أ – ي</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="catalog-meta">
+          <span id="catalog-count">الكتالوج</span>
+          <span id="stock-count-wrap"><strong id="stock-count">—</strong> جهاز متاح الآن</span>
+        </div>
+
+        <div id="status" class="status">
+          <span class="loader"></span>
+          جارٍ تحميل الأجهزة...
+        </div>
+
+        <div id="product-grid" class="product-grid" hidden></div>
+      </div>
+    </section>
+
+    <section id="why-us" class="why-section">
+      <div class="wrap">
+        <div class="section-heading centered">
+          <div>
+            <span class="section-kicker">WHY ANO STORE</span>
+            <h2>أبسط طريقة تختار بيها.</h2>
+            <p>من أول البحث لحد ما تختار جهازك.</p>
+          </div>
+        </div>
+
+        <div class="benefits-grid">
+          <article class="benefit">
+            <div class="benefit-number">01</div>
+            <div class="benefit-icon">◈</div>
+            <h3>مواصفات واضحة</h3>
+            <p>المعالج، الرام، التخزين والسعر في مكان واحد بدون تعقيد.</p>
+          </article>
+
+          <article class="benefit">
+            <div class="benefit-number">02</div>
+            <div class="benefit-icon">↯</div>
+            <h3>كتالوج سريع</h3>
+            <p>فلترة وبحث لحظي للوصول للجهاز المناسب في ثوانٍ.</p>
+          </article>
+
+          <article class="benefit">
+            <div class="benefit-number">03</div>
+            <div class="benefit-icon">◎</div>
+            <h3>اسأل قبل ما تشتري</h3>
+            <p>مش متأكد؟ تواصل معنا مباشرة واسأل عن الجهاز المناسب لك.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing-cta">
+      <div class="wrap closing-inner">
+        <div>
+          <span class="section-kicker">READY WHEN YOU ARE</span>
+          <h2>جهازك الجاي؟<br><span>خلّينا نلاقيه.</span></h2>
+        </div>
+        <a id="closing-contact" class="primary-btn large" href="#" target="_blank" rel="noopener">
+          تواصل مع ANO Store <span>↗</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-top">
+      <div>
+        <a class="brand footer-brand" href="#">
+          <span class="brand-mark">A</span>
+          <span>ANO<span class="brand-accent">STORE</span></span>
+        </a>
+        <p>Technology for what comes next.</p>
+      </div>
+      <div class="footer-note">
+        <span>CATALOG</span>
+        <strong>Updated from laptops.xlsx</strong>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© 2026 ANO Store. All rights reserved.</span>
+      <span>Made for better choices.</span>
+    </div>
+  </footer>
+
+  <div id="detail-overlay" class="overlay" hidden>
+    <div class="detail-card" role="dialog" aria-modal="true" aria-label="تفاصيل الجهاز">
+      <button id="detail-close" class="detail-close" aria-label="إغلاق">×</button>
+      <div id="detail-content"></div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const search = document.getElementById("search");
+      const contact = document.getElementById("contact-link");
+      const mobileContact = document.getElementById("mobile-contact");
+      const heroContact = document.getElementById("hero-contact");
+      const closingContact = document.getElementById("closing-contact");
+
+      const syncContact = () => {
+        if (typeof STORE_CONFIG !== "undefined") {
+          [contact, mobileContact, heroContact, closingContact].forEach((el) => {
+            if (el) el.href = STORE_CONFIG.contactUrl;
+          });
+        }
+      };
+
+      syncContact();
+
+      document.addEventListener("keydown", (event) => {
+        if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+          event.preventDefault();
+          search?.focus();
+        }
+        if (event.key === "Escape") {
+          const overlay = document.getElementById("detail-overlay");
+          if (overlay) overlay.hidden = true;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
