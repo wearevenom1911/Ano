@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#07090d">
+  <meta name="theme-color" content="#05060a">
   <meta name="description" content="ANO Store — اكتشف اللابتوب المناسب لك.">
   <title>ANO Store — Find Your Next Laptop</title>
 
@@ -14,8 +14,11 @@
 </head>
 
 <body>
+  <!-- Aurora background -->
   <div class="ambient ambient-one"></div>
   <div class="ambient ambient-two"></div>
+  <div class="ambient ambient-three"></div>
+  <div class="noise"></div>
 
   <header class="site-header">
     <div class="wrap header-inner">
@@ -39,25 +42,26 @@
   </header>
 
   <main>
+    <!-- ============ HERO ============ -->
     <section class="hero">
       <div class="wrap hero-grid">
         <div class="hero-copy">
-          <div class="eyebrow">
+          <div class="eyebrow reveal">
             <span class="pulse-dot"></span>
             <span>TECH • PERFORMANCE • STYLE</span>
           </div>
 
-          <h1>
+          <h1 class="reveal">
             اللابتوب الصح
             <span>يبدأ من هنا.</span>
           </h1>
 
-          <p class="hero-sub">
+          <p class="hero-sub reveal">
             اختار من مجموعة أجهزة متاحة، قارن المواصفات والأسعار، وخد قرارك بثقة.
             البيانات بتتحدث مباشرة من كتالوج ANO Store.
           </p>
 
-          <div class="hero-actions">
+          <div class="hero-actions reveal">
             <a class="primary-btn" href="#products">
               اكتشف الأجهزة
               <span>↓</span>
@@ -67,7 +71,7 @@
             </a>
           </div>
 
-          <div class="hero-trust">
+          <div class="hero-trust reveal">
             <div class="trust-item">
               <strong id="hero-stock">—</strong>
               <span>جهاز متاح</span>
@@ -87,6 +91,9 @@
 
         <div class="hero-visual" aria-hidden="true">
           <div class="hero-glow"></div>
+          <div class="hero-ring ring-one"></div>
+          <div class="hero-ring ring-two"></div>
+
           <div class="floating-tag tag-top">
             <span class="tag-icon">⚡</span>
             <span><b>FAST</b><small>Performance</small></span>
@@ -111,30 +118,29 @@
             <span class="tag-icon">✓</span>
             <span><b>YOUR CHOICE</b><small>Your next machine</small></span>
           </div>
-
-          <div class="orbit orbit-one"></div>
-          <div class="orbit orbit-two"></div>
         </div>
+      </div>
+
+      <div class="hero-scroll-hint" aria-hidden="true">
+        <span></span>
       </div>
     </section>
 
+    <!-- ============ BRAND MARQUEE ============ -->
     <section class="brand-strip">
-      <div class="wrap brand-strip-inner">
-        <span>AVAILABLE BRANDS</span>
-        <div class="brand-names">
-          <b>DELL</b>
-          <b>HP</b>
-          <b>LENOVO</b>
-          <b>ASUS</b>
-          <b>APPLE</b>
-          <b>ACER</b>
+      <div class="brand-marquee">
+        <div class="brand-track">
+          <span>DELL</span><i>◆</i><span>HP</span><i>◆</i><span>LENOVO</span><i>◆</i><span>ASUS</span><i>◆</i><span>APPLE</span><i>◆</i><span>ACER</span><i>◆</i>
+          <span>DELL</span><i>◆</i><span>HP</span><i>◆</i><span>LENOVO</span><i>◆</i><span>ASUS</span><i>◆</i><span>APPLE</span><i>◆</i><span>ACER</span><i>◆</i>
+          <span>DELL</span><i>◆</i><span>HP</span><i>◆</i><span>LENOVO</span><i>◆</i><span>ASUS</span><i>◆</i><span>APPLE</span><i>◆</i><span>ACER</span><i>◆</i>
         </div>
       </div>
     </section>
 
+    <!-- ============ PRODUCTS ============ -->
     <section id="products" class="products-section">
       <div class="wrap">
-        <div class="section-heading">
+        <div class="section-heading reveal">
           <div>
             <span class="section-kicker">THE COLLECTION</span>
             <h2>اختار جهازك.</h2>
@@ -147,7 +153,7 @@
           </div>
         </div>
 
-        <div class="controls-card">
+        <div class="controls-card reveal">
           <div class="search-box">
             <span class="search-icon">⌕</span>
             <input id="search" type="text" placeholder="ابحث باسم الجهاز أو الماركة..." autocomplete="off">
@@ -186,9 +192,10 @@
       </div>
     </section>
 
+    <!-- ============ WHY US ============ -->
     <section id="why-us" class="why-section">
       <div class="wrap">
-        <div class="section-heading centered">
+        <div class="section-heading centered reveal">
           <div>
             <span class="section-kicker">WHY ANO STORE</span>
             <h2>أبسط طريقة تختار بيها.</h2>
@@ -197,21 +204,21 @@
         </div>
 
         <div class="benefits-grid">
-          <article class="benefit">
+          <article class="benefit reveal">
             <div class="benefit-number">01</div>
             <div class="benefit-icon">◈</div>
             <h3>مواصفات واضحة</h3>
             <p>المعالج، الرام، التخزين والسعر في مكان واحد بدون تعقيد.</p>
           </article>
 
-          <article class="benefit">
+          <article class="benefit reveal">
             <div class="benefit-number">02</div>
             <div class="benefit-icon">↯</div>
             <h3>كتالوج سريع</h3>
             <p>فلترة وبحث لحظي للوصول للجهاز المناسب في ثوانٍ.</p>
           </article>
 
-          <article class="benefit">
+          <article class="benefit reveal">
             <div class="benefit-number">03</div>
             <div class="benefit-icon">◎</div>
             <h3>اسأل قبل ما تشتري</h3>
@@ -221,8 +228,9 @@
       </div>
     </section>
 
+    <!-- ============ CLOSING CTA ============ -->
     <section class="closing-cta">
-      <div class="wrap closing-inner">
+      <div class="wrap closing-inner reveal">
         <div>
           <span class="section-kicker">READY WHEN YOU ARE</span>
           <h2>جهازك الجاي؟<br><span>خلّينا نلاقيه.</span></h2>
@@ -293,6 +301,34 @@
           if (overlay) overlay.hidden = true;
         }
       });
+
+      /* --- scroll reveal --- */
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("revealed");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+
+      /* --- hero parallax tilt --- */
+      const stage = document.querySelector(".laptop-stage");
+      const heroVisual = document.querySelector(".hero-visual");
+      if (stage && heroVisual && window.matchMedia("(pointer:fine)").matches) {
+        heroVisual.addEventListener("mousemove", (e) => {
+          const r = heroVisual.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width - 0.5;
+          const y = (e.clientY - r.top) / r.height - 0.5;
+          stage.style.transform =
+            "perspective(1100px) rotateY(" + (-9 + x * 10) + "deg) rotateX(" + (5 - y * 8) + "deg)";
+        });
+        heroVisual.addEventListener("mouseleave", () => {
+          stage.style.transform = "perspective(1100px) rotateY(-9deg) rotateX(5deg)";
+        });
+      }
     });
   </script>
 </body>
