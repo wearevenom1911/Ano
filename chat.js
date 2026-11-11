@@ -1,7 +1,7 @@
 /* ============================================================
-   ANO Store — In-site Recommendation Chat Assistant
-   Pure client-side. Uses the same `laptops` array loaded from
-   laptops.xlsx by script.js. No server / no API key needed.
+   ANO Store — Recommendation Chat (fully button-driven)
+   No text input — user only clicks ready-made question chips.
+   Uses `laptops` array from laptops.xlsx loaded by script.js.
    ============================================================ */
 (function () {
   "use strict";
@@ -24,22 +24,13 @@
         <button class="anochat-restart" id="anochat-restart">↺ من الأول</button>
       </div>
       <div class="anochat-body" id="anochat-body"></div>
-      <div class="anochat-input">
-        <input id="anochat-input" type="text" placeholder="اكتب هنا... (مثلاً: جهاز للجامعة)" autocomplete="off">
-        <button class="anochat-send" id="anochat-send" aria-label="إرسال">
-          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-        </button>
-      </div>
     </div>
   `;
   document.body.appendChild(root);
 
   /* ---------- refs ---------- */
   const fab = root.querySelector("#anochat-fab");
-  const panel = root.querySelector("#anochat-panel");
   const body = root.querySelector("#anochat-body");
-  const input = root.querySelector("#anochat-input");
-  const sendBtn = root.querySelector("#anochat-send");
   const restartBtn = root.querySelector("#anochat-restart");
 
   let laptops = [];
@@ -68,9 +59,7 @@
   };
 
   /* ---------- chat primitives ---------- */
-  function scrollDown() {
-    body.scrollTop = body.scrollHeight;
-  }
+  function scrollDown() { body.scrollTop = body.scrollHeight; }
 
   function addMsg(role, html) {
     const el = document.createElement("div");
@@ -92,11 +81,12 @@
 
   async function botSay(html, delay) {
     const t = addTyping();
-    await sleep(delay || 650);
+    await sleep(delay || 550);
     t.remove();
     addMsg("bot", html);
   }
 
+  /* ready-made question buttons — the ONLY way to interact */
   function addChips(chips, onPick) {
     const wrap = document.createElement("div");
     wrap.className = "anochat-chips";
@@ -118,9 +108,8 @@
   function addProductCard(l, badge) {
     const card = document.createElement("div");
     card.className = "anochat-product";
-    const img = l.image || "";
     card.innerHTML = `
-      <img src="${img}" alt="" onerror="this.style.visibility='hidden'">
+      <img src="${l.image || ""}" alt="" onerror="this.style.visibility='hidden'">
       <div class="anochat-product-body">
         <b>${l.name}</b>
         <div class="anochat-product-specs">${l.cpu || ""}<br>${l.ram || ""} • ${l.storage || ""}</div>
@@ -141,19 +130,19 @@
 
   /* ---------- recommendation engine ---------- */
   const USAGE_PROFILES = {
-    study:    { label: "دراسة / جامعة",     ram: 8,  cpuScore: 1, gpu: 0, storage: 256, size: 14, priceBias: -1 },
-    office:   { label: "شغل مكتبي",         ram: 8,  cpuScore: 1, gpu: 0, storage: 256, size: 0,  priceBias: 0 },
-    coding:   { label: "برمجة",             ram: 16, cpuScore: 2, gpu: 0, storage: 512, size: 0,  priceBias: 0 },
-    design:   { label: "تصميم / مونتاج",    ram: 16, cpuScore: 2, gpu: 1, storage: 512, size: 15, priceBias: 0 },
-    gaming:   { label: "جيمنج",             ram: 16, cpuScore: 2, gpu: 2, storage: 512, size: 15, priceBias: 0 },
-    light:    { label: "استخدام خفيف",      ram: 8,  cpuScore: 0, gpu: 0, storage: 256, size: 0,  priceBias: -1 },
+    study:    { ram: 8,  cpuScore: 1, gpu: 0, storage: 256, size: 14, priceBias: -1 },
+    office:   { ram: 8,  cpuScore: 1, gpu: 0, storage: 256, size: 0,  priceBias: 0 },
+    coding:   { ram: 16, cpuScore: 2, gpu: 0, storage: 512, size: 0,  priceBias: 0 },
+    design:   { ram: 16, cpuScore: 2, gpu: 1, storage: 512, size: 15, priceBias: 0 },
+    gaming:   { ram: 16, cpuScore: 2, gpu: 2, storage: 512, size: 15, priceBias: 0 },
+    light:    { ram: 8,  cpuScore: 0, gpu: 0, storage: 256, size: 0,  priceBias: -1 },
   };
 
   const CPU_SCORES = [
-    { re: /i3|ryzen 3|7020u|gold/i,            s: 0 },
-    { re: /i5|ryzen 5/i,                       s: 2 },
+    { re: /i3|ryzen 3|7020u|gold/i,              s: 0 },
+    { re: /i5|ryzen 5/i,                         s: 2 },
     { re: /i7|ryzen 7|xeon|9880h|10850h|9850h/i, s: 3 },
-    { re: /i9|10885h/i,                        s: 4 },
+    { re: /i9|10885h/i,                          s: 4 },
   ];
 
   const gpuScore = (l) => {
@@ -169,8 +158,8 @@
     return m ? parseInt(m[1], 10) : 0;
   };
   const screenNum = (l) => {
-    const m = (l.description || "").match(/(\d{2}(?:\.\d)?)"|(\d{2}(?:\.\d)?)\s*(?:"|بوصة)/);
-    return m ? parseFloat(m[1] || m[2]) : 0;
+    const m = (l.description || "").match(/(\d{2}(?:\.\d)?)\s*(?:"|بوصة)/);
+    return m ? parseFloat(m[1]) : 0;
   };
 
   function scoreLaptop(l, p) {
@@ -181,17 +170,11 @@
     const ssd = ssdNum(l);
     const size = screenNum(l);
 
-    // RAM: reward meeting the need, penalize below
     s += ram >= p.ram ? 3 : (ram >= 8 ? 1 : -2);
-    // CPU
     s += cpu >= p.cpuScore + 1 ? 3 : (cpu >= p.cpuScore ? 2 : 0);
-    // GPU
     s += gpu >= p.gpu ? (p.gpu ? 3 : 1) : (gpu >= 1 ? 0 : -1);
-    // storage
     s += ssd >= p.storage ? 2 : (ssd >= 256 ? 1 : 0);
-    // screen size closeness
     if (p.size && size) s += Math.abs(size - p.size) <= 1 ? 2 : 0;
-    // cheaper is a small plus for budget-conscious profiles
     if (p.priceBias < 0) s -= l.price / 12000;
     else s -= l.price / 30000;
 
@@ -210,126 +193,122 @@
     const [min, max] = budgetRange(state.budget);
     let pool = laptops.filter((l) => l.inStock && l.price >= min && l.price <= max);
     if (pool.length === 0) pool = laptops.filter((l) => l.inStock);
-    const ranked = pool
+    return pool
       .map((l) => ({ l, s: scoreLaptop(l, p) }))
       .sort((a, b) => b.s - a.s || a.l.price - b.l.price)
       .slice(0, 3)
       .map((x) => x.l);
-    return ranked;
   }
 
-  /* ---------- conversation flow ---------- */
+  /* ---------- conversation flow (all buttons) ---------- */
+  const USAGE_CHIPS = [
+    { id: "study",  label: "🎓 دراسة / جامعة" },
+    { id: "office", label: "💼 شغل مكتبي" },
+    { id: "coding", label: "💻 برمجة" },
+    { id: "design", label: "🎨 تصميم / مونتاج" },
+    { id: "gaming", label: "🎮 جيمنج" },
+    { id: "light",  label: "🌤 استخدام خفيف" },
+  ];
+
+  const BUDGET_CHIPS = [
+    { id: "low",  label: "أقل من 20,000" },
+    { id: "mid",  label: "20,000 – 28,000" },
+    { id: "high", label: "28,000 – 36,000" },
+    { id: "any",  label: "مهمش السعر، مهم الأفضل" },
+  ];
+
+  const START_CHIPS = [
+    { id: "rec",   label: "ابدأ التوصية ✨" },
+    { id: "cheap", label: "أرخص جهاز؟ 💰" },
+    { id: "top",   label: "أقوى جهاز؟ 💪" },
+    { id: "wa",    label: "تواصل واتساب ↗" },
+  ];
+
+  function startChips() {
+    addChips(START_CHIPS, (c) => {
+      if (c.id === "rec") askUsage();
+      else if (c.id === "cheap") showCheapest();
+      else if (c.id === "top") showTop();
+      else window.open(contactUrl(), "_blank");
+    });
+  }
+
   async function askUsage() {
     state.step = "usage";
-    await botSay("تمام! 👋 عشان أرشحلك أحسن جهاز — <b>هتستخدم اللابتوب في إيه؟</b>", 550);
-    addChips(
-      [
-        { id: "study",  label: "🎓 دراسة / جامعة" },
-        { id: "office", label: "💼 شغل مكتبي" },
-        { id: "coding", label: "💻 برمجة" },
-        { id: "design", label: "🎨 تصميم / مونتاج" },
-        { id: "gaming", label: "🎮 جيمنج" },
-        { id: "light",  label: "🌤 استخدام خفيف" },
-      ],
-      (c) => { state.usage = c.id; askBudget(); }
-    );
+    await botSay("تمام! 👋 <b>هتستخدم اللابتوب في إيه؟</b>", 550);
+    addChips(USAGE_CHIPS, (c) => { state.usage = c.id; askBudget(); });
   }
 
   async function askBudget() {
     state.step = "budget";
     await botSay("كويس! و<b>ميزانيتك تقريبًا كام؟</b> (بالجنيه المصري)", 550);
-    addChips(
-      [
-        { id: "low",  label: "أقل من 20,000" },
-        { id: "mid",  label: "20,000 – 28,000" },
-        { id: "high", label: "28,000 – 36,000" },
-        { id: "any",  label: "مهمش السعر، مهم الأفضل" },
-      ],
-      (c) => { state.budget = c.id; showResult(); }
-    );
+    addChips(BUDGET_CHIPS, (c) => { state.budget = c.id; showResult(); });
   }
 
   async function showResult() {
     state.step = "result";
-    await botSay("ثانية واحدة… بحلل الكتالوج 🔍", 700);
+    await botSay("ثانية واحدة… بحلل الكتالوج 🔍", 650);
     const recs = recommend();
     if (recs.length === 0) {
-      await botSay("معلش، مش لاقي جهاز مناسب للأسف 😅 جرب تديني ميزانية تانية؟");
-      state.step = "budget";
-      addChips(
-        [
-          { id: "low",  label: "أقل من 20,000" },
-          { id: "mid",  label: "20,000 – 28,000" },
-          { id: "high", label: "28,000 – 36,000" },
-          { id: "any",  label: "مهمش السعر" },
-        ],
-        (c) => { state.budget = c.id; showResult(); }
-      );
+      await botSay("مش لاقي جهاز في الميزانية دي 😅 جرب تاني؟", 500);
+      addChips(BUDGET_CHIPS, (c) => { state.budget = c.id; showResult(); });
       return;
     }
     await botSay("ده <b>أفضل جهاز ليك</b> حسب استخدامك 👇", 400);
     addProductCard(recs[0], "⭐ الأنسب ليك");
     if (recs[1]) await botSay("ولو عايز بدائل، دول برضه اختيارات ممتازة:", 600);
     recs.slice(1).forEach((l) => addProductCard(l));
-    await botSay(
-      "عايز حاجة تانية؟ 🤔<br>• دوس <b>↺ من الأول</b> فوق<br>• أو اسألني أي سؤال تحت 👇<br>• أو اطلب مباشرة من واتساب",
-      600
+    await botSay("عايز تعمل إيه دلوقتي؟", 550);
+    addChips(
+      [
+        { id: "again", label: "🔁 جهاز تاني / من الأول" },
+        { id: "budget", label: "💵 ميزانية تانية" },
+        { id: "wa", label: "تواصل واتساب ↗" },
+      ],
+      (c) => {
+        if (c.id === "again") { state.usage = null; state.budget = null; askUsage(); }
+        else if (c.id === "budget") { state.budget = null; askBudget(); }
+        else window.open(contactUrl(), "_blank");
+      }
     );
-  }
-
-  /* ---------- free text: simple intent matching ---------- */
-  const INTENTS = [
-    { re: /جامع|دراس|كلي|مدرس/,                        fn: () => pickUsage("study") },
-    { re: /مكتبي|شغل مكت|اوفيس|office/,                fn: () => pickUsage("office") },
-    { re: /برمج|كود|coding|code/,                      fn: () => pickUsage("coding") },
-    { re: /مونتاج|تصميم|فوتوشوب|بريمير|اديت|design/,   fn: () => pickUsage("design") },
-    { re: /جيم|جيمنج|العب|العاب|gaming|game/,          fn: () => pickUsage("gaming") },
-    { re: /خفيف|بسيط|عادي/,                            fn: () => pickUsage("light") },
-    { re: /ارخ|ارخص|اقل سعر|سعر اقل/,                  fn: showCheapest },
-    { re: /اقوى|افضل|أقوى|أفضل|strongest|top/,         fn: showTop },
-    { re: /شحن|توصيل|delivery/,                        fn: async () => { await botSay("التوصيل والتفاصيل بنرتبها مع بعض على الواتساب مباشرة 🚚 دوس زرار «تواصل معنا» في الهيدر أو زرار الطلب جنب أي جهاز."); } },
-    { re: /ضمان|جارنتي|warranty/,                      fn: async () => { await botSay("تفاصيل الضمان والحالة بتاعت كل جهاز متاحة — اسأل عليها على الواتساب وهنرد عليك فورًا ✅"); } },
-    { re: /تواصل|واتس|whats|رقم/,                      fn: async () => { await botSay('تواصل معنا على واتساب من <a href="' + contactUrl() + '" target="_blank" rel="noopener" style="color:var(--c-accent)">هنا ↗</a>'); } },
-    { re: /سلام|شكرا|شكراً|تمام|كويس|OK|ok/,           fn: async () => { await botSay("العفو! 🌟 تحت أمرك في أي وقت — لو حبيت تبدأ تاني دوس ↺ من الأول"); } },
-  ];
-
-  function pickUsage(id) {
-    state.usage = id;
-    askBudget();
   }
 
   async function showCheapest() {
     await botSay("أرخص جهاز متاح حاليًا 👇", 600);
     const cheapest = laptops.filter((l) => l.inStock).sort((a, b) => a.price - b.price)[0];
-    if (cheapest) addProductCard(cheapest, "💰 الأرخص");
-    else await botSay("مش لاقي جهاز متاح حاليًا، جرب تاني بعد شوية 🙏");
+    if (cheapest) {
+      addProductCard(cheapest, "💰 الأرخص");
+      await botSay("عايز حاجة تانية؟", 500);
+      startChips();
+    } else {
+      await botSay("مش لاقي جهاز متاح حاليًا، جرب تاني بعد شوية 🙏");
+    }
   }
 
   async function showTop() {
     await botSay("أقوى جهاز في الكتالوج دلوقتي 💪👇", 600);
     const top = laptops.filter((l) => l.inStock).sort((a, b) => b.price - a.price)[0];
-    if (top) addProductCard(top, "💪 الأقوى");
-    else await botSay("مش لاقي جهاز متاح حاليًا، جرب تاني بعد شوية 🙏");
-  }
-
-  async function handleText(text) {
-    const hit = INTENTS.find((i) => i.re.test(text));
-    if (hit) { await hit.fn(); return; }
-    await botSay("أنا بفهم الأسئلة عن <b>الاستخدام، الميزانية، الأسعار، الشحن، الضمان</b> 🙂<br>جرب: «جهاز للجامعة» أو «أرخص جهاز؟»");
+    if (top) {
+      addProductCard(top, "💪 الأقوى");
+      await botSay("عايز حاجة تانية؟", 500);
+      startChips();
+    } else {
+      await botSay("مش لاقي جهاز متاح حاليًا، جرب تاني بعد شوية 🙏");
+    }
   }
 
   /* ---------- wiring ---------- */
   function openChat() {
     root.classList.add("anochat-open");
     fab.querySelector(".anochat-fab-badge")?.remove();
-    setTimeout(() => input.focus(), 250);
     if (state.step === "idle") {
       state.step = "started";
-      waitForCatalog(() => {
-        botSay(
-          "أهلاً بيك في <b>ANO Store</b> 👋<br>أنا مساعدك الذكي — هساعدك تلاقي <b>الجهاز المناسب ليك</b> من الكتالوج.",
+      waitForCatalog(async () => {
+        await botSay(
+          "أهلاً بيك في <b>ANO Store</b> 👋<br>أنا مساعدك — هساعدك تلاقي <b>الجهاز المناسب ليك</b>.<br>اختار من الأسئلة الجاهزة تحت 👇",
           500
-        ).then(() => askUsage());
+        );
+        startChips();
       });
     }
   }
@@ -345,18 +324,5 @@
     state.usage = null;
     state.budget = null;
     openChat();
-  });
-
-  async function onSend() {
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = "";
-    addMsg("user", text.replace(/</g, "&lt;"));
-    await handleText(text);
-  }
-
-  sendBtn.addEventListener("click", onSend);
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") onSend();
   });
 })();
