@@ -128,8 +128,19 @@ function render() {
     .join("");
 
   gridEl.querySelectorAll(".card").forEach((card) => {
-    card.addEventListener("click", () => openDetail(Number(card.dataset.index)));
+    card.addEventListener("click", () => {
+      const l = laptops[Number(card.dataset.index)];
+      window.location.href = "laptops/" + slugify(l.name) + ".html";
+    });
   });
+}
+
+function slugify(name) {
+  return name
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 function fallbackImage() {
