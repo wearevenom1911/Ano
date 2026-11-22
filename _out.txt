@@ -1,0 +1,6 @@
+  File "/Users/venom1911/Downloads/Ano-site/_update.py", line 25
+    "
+    ^
+SyntaxError: unterminated string literal (detected at line 25)
+exit=1
+done
